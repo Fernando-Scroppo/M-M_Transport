@@ -116,6 +116,7 @@ interface Vehicle {
       font-weight: 400;
       line-height: 1.15;
       margin-bottom: 24px;
+      color: var(--gold);
       //letter-spacing: -0.5px;
 
       .highlight {
