@@ -8,7 +8,7 @@ export class InstagramService {
   private readonly defaultMessage = `¡Hola!
 Gracias por comunicarte con M&M Servicios de Traslados Ejecutivos.
 
-Será un placer ayudarte con tu traslado.
+Es un placer ayudarte con tu traslado.
 
 Para brindarte una atención más rápida, por favor indicanos:
 • Fecha y horario del viaje

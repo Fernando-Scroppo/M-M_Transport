@@ -19,7 +19,7 @@ import { WhatsAppService } from '../core/services/whatsapp.service';
         </div>
 
         <h1 class="hero-title">
-          Detras de cada viaje<br>
+          Detr&aacute;s de cada viaje<br>
           <em>un sueño cumplido</em>
         </h1>
 

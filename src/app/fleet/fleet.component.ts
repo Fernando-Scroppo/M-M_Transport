@@ -362,7 +362,7 @@ export class FleetComponent {
       id: 'peugeot-408',
       name: 'Peugeot 408',
       image: 'assets/images/vehicles/peugeot-408.png',
-      passengers: 4,
+      passengers: 2,
       luggage: 2,
       features: ['Conforto Premium', 'Tecnología Avanzada', 'Eficiencia de Combustible']
     },
@@ -370,7 +370,7 @@ export class FleetComponent {
       id: 'honda-civic',
       name: 'Honda Civic',
       image: 'assets/images/vehicles/honda-civic.png',
-      passengers: 4,
+      passengers: 2,
       luggage: 2,
       features: ['Desempeño Deportivo', 'Tecnología Segura', 'Confor Ejecutivo']
     },
@@ -378,7 +378,7 @@ export class FleetComponent {
       id: 'toyota-corolla',
       name: 'Toyota Corolla',
       image: 'assets/images/vehicles/toyota-corolla.png',
-      passengers: 4,
+      passengers: 2,
       luggage: 2,
       features: ['Fiabilidad Comprobada', 'Seguridad Avanzada', 'Confort Excepcional']
     }

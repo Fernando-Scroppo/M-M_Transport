@@ -15,7 +15,6 @@ import { FleetComponent } from './fleet/fleet.component';
         <div class="nav-inner">
           <div class="nav-logo">
             <img src="assets/images/Logo.png" alt="M&M Logo" class="logo-img">
-            <span class="logo-text">M&M</span>
           </div>
           <ul class="nav-links">
             <li><a href="#inicio">Inicio</a></li>
@@ -40,10 +39,6 @@ import { FleetComponent } from './fleet/fleet.component';
       <app-about id="nosotros"></app-about>
       <app-fleet id="flota"></app-fleet>
       <app-contact id="contacto"></app-contact>
-
-      <div class="back-btn-wrap">
-        <a [routerLink]="['/selector']" class="back-btn">← Volver al selector</a>
-      </div>
     </div>
   `,
   styles: [`
@@ -230,7 +225,7 @@ import { FleetComponent } from './fleet/fleet.component';
     }
 
     .logo-img {
-      height: 50px;
+      height: 150px;
       width: auto;
       object-fit: contain;
       /*filter: brightness(0) invert(1); la convierte a blanco */

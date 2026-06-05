@@ -11,7 +11,7 @@ import { Component } from '@angular/core';
         <div class="about-header">
           <div class="section-tag">
             <span class="tag-line"></span>
-            <span>Quiénes Somos</span>
+            <span>Nosotros</span>
           </div>
           <h2 class="section-title">
             Más de una década conectando<br>
