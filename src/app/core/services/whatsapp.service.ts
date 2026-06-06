@@ -6,6 +6,7 @@ import { environment } from '../../../environments/environment';
 })
 export class WhatsAppService {
   private readonly phoneNumber = environment.phoneNumber;
+  private readonly PUBLIC_KEY = environment.publicKeyEmail;
   private readonly defaultMessage = `¡Hola!
 Gracias por comunicarte con M&M Servicios de Traslados Ejecutivos.
 
@@ -21,11 +22,12 @@ Te responderemos a la brevedad con toda la información.
 ¡Gracias por elegir viajar con confort, puntualidad y confianza!`;
 
   constructor() {}
-
+  
   /**
    * Genera la URL de WhatsApp con el mensaje predefinido
    */
   getWhatsAppUrl(): string {
+    console.log('PublicKey desde whatsapp: ', this.PUBLIC_KEY);
     const encodedMessage = encodeURIComponent(this.defaultMessage);
     return `https://wa.me/${this.phoneNumber}?text=${encodedMessage}`;
   }

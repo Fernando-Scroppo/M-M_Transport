@@ -22,7 +22,6 @@ import { FleetComponent } from './fleet/fleet.component';
             <li><a href="#flota">Nuestra Flota</a></li>
             <li><a href="#contacto">Contacto</a></li>
           </ul>
-          <button class="nav-cta" (click)="scrollTo('contacto')">Reservar</button>
           <button class="hamburger" (click)="toggleMenu()" [class.open]="menuOpen">
             <span></span><span></span><span></span>
           </button>

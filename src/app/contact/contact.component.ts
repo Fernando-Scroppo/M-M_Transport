@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { WhatsAppService } from '../core/services/whatsapp.service';
 import { InstagramService } from '../core/services/instagram.service';
+import { EmailService } from '../core/services/email.service';
 
 @Component({
   selector: 'app-contact',
@@ -18,7 +19,7 @@ import { InstagramService } from '../core/services/instagram.service';
               <span class="tag-line"></span>
               <span>Feedback</span>
             </div>
-            <h2>Compartí su<br><span class="highlight">experiencia</span></h2>
+            <h2>Compartí tu<br><span class="highlight">experiencia</span></h2>
             <p class="info-desc">
               Nos esforzamos por brindar un servicio basado en la puntualidad, el confort 
               y la atención personalizada. Su opinión nos ayuda a seguir mejorando.
@@ -105,12 +106,18 @@ import { InstagramService } from '../core/services/instagram.service';
               </div>
 
               <!-- Botón Principal -->
-              <button class="submit-btn" (click)="onSubmit()">
-                <span>Enviar comentario</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <button class="submit-btn" (click)="onSubmit()" [disabled]="isSubmitting">
+                <span>{{ isSubmitting ? 'Enviando...' : 'Enviar comentario' }}</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" *ngIf="!isSubmitting">
                   <path d="M5 12h14M12 5l7 7-7 7"/>
                 </svg>
+                <span class="spinner" *ngIf="isSubmitting"></span>
               </button>
+
+              <!-- Mensaje de Respuesta -->
+              <p class="submit-message" [class.error]="submitError" *ngIf="submitMessage">
+                {{ submitMessage }}
+              </p>
 
               <!-- Frase de Gratitud -->
               <p class="gratitude-msg">
@@ -135,14 +142,14 @@ import { InstagramService } from '../core/services/instagram.service';
   `,
   styles: [`
     .t4-feedback {
-      background: linear-gradient(180deg, #060606 0%, #0a0a0a 100%);
+      background: #f8f4e8;
+      padding: 100px 40px;
       min-height: 100vh;
     }
 
     .container {
       max-width: 1280px;
       margin: 0 auto;
-      padding: 100px 40px;
     }
 
     @media (max-width: 1024px) {
@@ -200,7 +207,7 @@ import { InstagramService } from '../core/services/instagram.service';
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(36px, 3.5vw, 52px);
       font-weight: 300;
-      color: #fff;
+      color: #060606;
       line-height: 1.15;
       margin-bottom: 24px;
     }
@@ -215,7 +222,7 @@ import { InstagramService } from '../core/services/instagram.service';
       font-size: 14px;
       font-weight: 300;
       line-height: 1.9;
-      color: rgba(255,255,255,0.6);
+      color: #4a5568;
       margin-bottom: 50px;
     }
 
@@ -325,7 +332,7 @@ import { InstagramService } from '../core/services/instagram.service';
       border-radius: 8px;
       border: 2px solid #d4af37;
       background: transparent;
-      color: #d4af37;
+      color: #060606;
       font-family: 'Montserrat', sans-serif;
       font-weight: 500;
       font-size: 12px;
@@ -355,13 +362,13 @@ import { InstagramService } from '../core/services/instagram.service';
     }
 
     .form-card {
-      background: rgba(255,255,255,0.02);
+      background: #fff;
       backdrop-filter: blur(12px);
       border: 1px solid rgba(212,175,55,0.25);
       border-radius: 12px;
       padding: 48px;
       width: 100%;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 4px 30px rgba(6,6,6,0.08);
     }
 
     @media (max-width: 768px) {
@@ -376,7 +383,7 @@ import { InstagramService } from '../core/services/instagram.service';
       font-family: 'Cormorant Garamond', serif;
       font-size: 28px;
       font-weight: 300;
-      color: #fff;
+      color: #060606;
       margin-bottom: 8px;
       letter-spacing: 0.5px;
     }
@@ -385,7 +392,7 @@ import { InstagramService } from '../core/services/instagram.service';
       font-family: 'Montserrat', sans-serif;
       font-size: 13px;
       font-weight: 300;
-      color: rgba(255,255,255,0.5);
+      color: #4a5568;
       margin-bottom: 32px;
       letter-spacing: 0.5px;
     }
@@ -428,19 +435,19 @@ import { InstagramService } from '../core/services/instagram.service';
     .form-group input,
     .form-group select,
     .form-group textarea {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(212,175,55,0.2);
+      background: rgba(255,255,255,0.8);
+      border: 1px solid rgba(212,175,55,0.3);
       border-radius: 6px;
       padding: 12px 16px;
       font-family: 'Montserrat', sans-serif;
       font-size: 14px;
-      color: #fff;
+      color: #060606;
       transition: all 0.3s ease;
     }
 
     .form-group input::placeholder,
     .form-group textarea::placeholder {
-      color: rgba(255,255,255,0.3);
+      color: rgba(6,6,6,0.4);
     }
 
     .form-group input:focus,
@@ -448,13 +455,13 @@ import { InstagramService } from '../core/services/instagram.service';
     .form-group textarea:focus {
       outline: none;
       border-color: #d4af37;
-      background: rgba(212,175,55,0.08);
+      background: #fff;
       box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
     }
 
     /* Select Field */
     .select-field {
-      background-color: rgba(255,255,255,0.04) !important;
+      background-color: rgba(255,255,255,0.8) !important;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23d4af37' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 12px center;
@@ -464,8 +471,8 @@ import { InstagramService } from '../core/services/instagram.service';
     }
 
     .select-field option {
-      background: #1a1a1a;
-      color: #fff;
+      background: #fff;
+      color: #060606;
     }
 
     /* Textarea */
@@ -539,28 +546,79 @@ import { InstagramService } from '../core/services/instagram.service';
       margin-top: 12px;
     }
 
-    .submit-btn:hover {
+    .submit-btn:hover:not(:disabled) {
       transform: translateY(-3px);
       box-shadow: 0 12px 32px rgba(212,175,55,0.4);
     }
 
-    .submit-btn:active {
+    .submit-btn:active:not(:disabled) {
       transform: translateY(-1px);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.8;
+      cursor: not-allowed;
     }
 
     .submit-btn svg {
       transition: transform 0.3s ease;
     }
 
-    .submit-btn:hover svg {
+    .submit-btn:hover:not(:disabled) svg {
       transform: translateX(2px);
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(6,6,6,0.3);
+      border-top-color: #060606;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Submit Message */
+    .submit-message {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      margin-top: 14px;
+      text-align: center;
+      padding: 12px;
+      border-radius: 6px;
+      background: rgba(212, 175, 55, 0.1);
+      color: #060606;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      animation: slideIn 0.3s ease-out;
+    }
+
+    .submit-message.error {
+      background: rgba(220, 53, 69, 0.1);
+      color: #dc3545;
+      border-color: rgba(220, 53, 69, 0.3);
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* Gratitude Message */
     .gratitude-msg {
       font-family: 'Montserrat', sans-serif;
       font-size: 12px;
-      color: rgba(212,175,55,0.7);
+      color: #060606;
       margin-top: 20px;
       text-align: center;
       font-style: italic;
@@ -569,8 +627,8 @@ import { InstagramService } from '../core/services/instagram.service';
 
     /* Footer */
     .t4-footer {
-      background: rgba(0,0,0,0.4);
-      border-top: 1px solid rgba(212,175,55,0.1);
+      background: rgba(6,6,6,0.05);
+      border-top: 1px solid rgba(212,175,55,0.15);
       padding: 50px 40px;
       text-align: center;
     }
@@ -612,7 +670,7 @@ import { InstagramService } from '../core/services/instagram.service';
     .footer-copy {
       font-family: 'Montserrat', sans-serif;
       font-size: 11px;
-      color: rgba(255,255,255,0.3);
+      color: rgba(6,6,6,0.4);
       letter-spacing: 0.5px;
     }
 
@@ -641,6 +699,9 @@ export class ContactComponent {
   };
 
   hoverRating = 0;
+  isSubmitting = false;
+  submitMessage = '';
+  submitError = false;
 
   ratingTexts = {
     1: '⭐ Necesita mejora',
@@ -652,7 +713,8 @@ export class ContactComponent {
 
   constructor(
     private whatsAppService: WhatsAppService,
-    private instagramService: InstagramService
+    private instagramService: InstagramService,
+    private emailService: EmailService
   ) {}
 
   setRating(stars: number) {
@@ -665,14 +727,34 @@ export class ContactComponent {
 
   onSubmit() {
     if (this.feedback.comment.trim()) {
-      this.whatsAppService.openWhatsApp();
-      // Reset form
-      this.feedback = {
-        name: '',
-        rating: 0,
-        reason: '',
-        comment: ''
-      };
+      this.isSubmitting = true;
+      this.submitMessage = '';
+      this.submitError = false;
+
+      this.emailService.sendFeedback(this.feedback).then(
+        (response) => {
+          this.isSubmitting = false;
+          this.submitMessage = '✅ ¡Gracias! Tu comentario ha sido enviado exitosamente.';
+          this.submitError = false;
+          
+          // Reset form después de 2 segundos
+          setTimeout(() => {
+            this.feedback = {
+              name: '',
+              rating: 0,
+              reason: '',
+              comment: ''
+            };
+            this.submitMessage = '';
+          }, 2000);
+        },
+        (error) => {
+          this.isSubmitting = false;
+          this.submitMessage = '❌ Error al enviar el comentario. Por favor, intenta nuevamente.';
+          this.submitError = true;
+          console.error('Error al enviar feedback:', error);
+        }
+      );
     } else {
       alert('Por favor, cuéntenos su experiencia en el comentario.');
     }
