@@ -377,7 +377,7 @@ import { WhatsAppService } from '../core/services/whatsapp.service';
 
     .hero-visual {
       position: relative;
-      width: 55%;
+      width: 60%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -386,8 +386,8 @@ import { WhatsAppService } from '../core/services/whatsapp.service';
 
     .car-placeholder {
       position: relative;
-      width: 60%;
-      height: 760px;
+      width: 84%;
+      height: 820px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -397,8 +397,8 @@ import { WhatsAppService } from '../core/services/whatsapp.service';
     .car-placeholder::before {
       content: "";
       position: absolute;
-      width: 900px;
-      height: 900px;
+      width: 1000px;
+      height: 1000px;
       background: radial-gradient(
         circle,
         rgba(212, 175, 55, 0.20) 0%,
@@ -412,7 +412,7 @@ import { WhatsAppService } from '../core/services/whatsapp.service';
     /* Imagen del auto */
     .car-image {
       position: relative;
-      width: 130%;
+      width: 165%;
       max-width: none;
 
       transform: translateX(80px);
@@ -465,8 +465,8 @@ import { WhatsAppService } from '../core/services/whatsapp.service';
     }
 
     .car-image {
-      width: 145%;
-      margin-top: 60px;
+      width: 165%;
+      margin-top: 40px;
     }
 
 /* FINALIZAN CLASES NUEVAS */

@@ -8,7 +8,7 @@ import { FleetComponent } from './fleet/fleet.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterLink, HomeComponent, AboutComponent, FleetComponent, ContactComponent],
+  imports: [HomeComponent, AboutComponent, FleetComponent, ContactComponent],
   template: `
     <div class="t4-wrapper">
       <nav class="t4-nav" [class.scrolled]="isScrolled">
@@ -74,9 +74,9 @@ import { FleetComponent } from './fleet/fleet.component';
     }
 
     .nav-inner {
-      max-width: 1280px;
+      max-width: 1480px;
       margin: 0 auto;
-      padding: 0 40px;
+      padding: 0 100px 0 40px;
       display: flex;
       align-items: center;
       gap: 40px;
@@ -87,6 +87,7 @@ import { FleetComponent } from './fleet/fleet.component';
       align-items: center;
       gap: 12px;
       flex-shrink: 0;
+      transform: translateX(-108px);
     }
 
     .logo-icon {
