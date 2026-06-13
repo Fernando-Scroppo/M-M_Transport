@@ -1,4 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { TranslationService } from '../core/services/translation.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 interface Vehicle {
   id: string;
@@ -12,22 +16,21 @@ interface Vehicle {
 @Component({
   selector: 'app-fleet',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   template: `
     <section class="t4-fleet">
       <div class="container">
         <div class="fleet-header">
           <div class="section-tag">
             <span class="tag-line"></span>
-            <span>Nuestra Flota</span>
+            <span>{{ translations.fleet.sectionTag }}</span>
           </div>
           <h2 class="section-title">
-            Traslados Ejecutivos<br>
-            <span class="highlight">Unidades modernas, confortables y seguras</span>
+            {{ translations.fleet.title }}<br>
+            <span class="highlight">{{ translations.fleet.titleHighlight }}</span>
           </h2>
           <p class="section-desc">
-            Unidades modernas, confortables y seguras para brindarte
-            un servicio ejecutivo de primera clase.
+            {{ translations.fleet.description }}
           </p>
         </div>
 
@@ -49,21 +52,21 @@ interface Vehicle {
                       <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                       <polyline points="9 22 9 12 15 12 15 22"/>
                     </svg>
-                    <span>{{ vehicle.passengers }} pasajeros</span>
+                    <span>{{ vehicle.passengers }} {{ translations.fleet.passengers }}</span>
                   </div>
                   
                   <div class="feature">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                       <path d="M6 9h12M6 9l-1 10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2l-1-10M6 9h12M9 5h6M9 5V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
                     </svg>
-                    <span>{{ vehicle.luggage }} valijas</span>
+                    <span>{{ vehicle.luggage }} {{ translations.fleet.luggage }}</span>
                   </div>
                   
                   <div class="feature">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                       <path d="M6 10h12M6 10l.5-2h11l.5 2M6 10v4a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-4"/>
                     </svg>
-                    <span>Aire Acondicionado</span>
+                    <span>{{ translations.fleet.airConditioning }}</span>
                   </div>
                 </div>
               </div>
@@ -356,31 +359,67 @@ interface Vehicle {
     }
   `]
 })
-export class FleetComponent {
-  vehicles: Vehicle[] = [
-    {
-      id: 'peugeot-408',
-      name: 'Peugeot 408',
-      image: 'assets/images/vehicles/peugeot-408.png',
-      passengers: 2,
-      luggage: 2,
-      features: ['Conforto Premium', 'Tecnología Avanzada', 'Eficiencia de Combustible']
-    },
-    {
-      id: 'honda-civic',
-      name: 'Honda Civic',
-      image: 'assets/images/vehicles/honda-civic.png',
-      passengers: 2,
-      luggage: 2,
-      features: ['Desempeño Deportivo', 'Tecnología Segura', 'Confor Ejecutivo']
-    },
-    {
-      id: 'toyota-corolla',
-      name: 'Toyota Corolla',
-      image: 'assets/images/vehicles/toyota-corolla.png',
-      passengers: 2,
-      luggage: 2,
-      features: ['Fiabilidad Comprobada', 'Seguridad Avanzada', 'Confort Excepcional']
-    }
-  ];
+export class FleetComponent implements OnInit, OnDestroy {
+  translations: any = {};
+  vehicles: Vehicle[] = [];
+  private destroy$ = new Subject<void>();
+
+  constructor(private translationService: TranslationService) {}
+
+  ngOnInit(): void {
+    this.translations = this.translationService.getCurrentTranslations();
+    this.updateVehicles();
+
+    this.translationService.currentTranslations$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(translations => {
+        this.translations = translations;
+        this.updateVehicles();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private updateVehicles(): void {
+    const t = this.translations.fleet?.vehicles;
+    if (!t) return;
+
+    this.vehicles = [
+      {
+        id: 'peugeot-408',
+        name: t.peugeot408.name,
+        image: 'assets/images/vehicles/peugeot-408.png',
+        passengers: 2,
+        luggage: 2,
+        features: t.peugeot408.features
+      },
+      {
+        id: 'honda-civic',
+        name: t.hondaCivic.name,
+        image: 'assets/images/vehicles/honda-civic.png',
+        passengers: 2,
+        luggage: 2,
+        features: t.hondaCivic.features
+      },
+      {
+        id: 'toyota-corolla',
+        name: t.toyotaCorolla.name,
+        image: 'assets/images/vehicles/toyota-corolla.png',
+        passengers: 2,
+        luggage: 2,
+        features: t.toyotaCorolla.features
+      },
+      {
+        id: 'toyota-hiace-wagon',
+        name: t.toyotaHiace.name,
+        image: 'assets/images/vehicles/toyota-hiace-wagon.png',
+        passengers: 4,
+        luggage: 4,
+        features: t.toyotaHiace.features
+      }
+    ];
+  }
 }

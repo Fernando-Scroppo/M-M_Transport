@@ -1,14 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
 import { FleetComponent } from './fleet/fleet.component';
+import { TranslationService, Language } from './core/services/translation.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterLink, HomeComponent, AboutComponent, FleetComponent, ContactComponent],
+  imports: [CommonModule, HomeComponent, AboutComponent, FleetComponent, ContactComponent],
   template: `
     <div class="t4-wrapper">
       <nav class="t4-nav" [class.scrolled]="isScrolled">
@@ -17,20 +21,39 @@ import { FleetComponent } from './fleet/fleet.component';
             <img src="assets/images/Logo.png" alt="M&M Logo" class="logo-img">
           </div>
           <ul class="nav-links">
-            <li><a href="#inicio">Inicio</a></li>
-            <li><a href="#nosotros">Nosotros</a></li>
-            <li><a href="#flota">Nuestra Flota</a></li>
-            <li><a href="#contacto">Contacto</a></li>
+            <li><a href="#inicio">{{ translations.navbar.inicio }}</a></li>
+            <li><a href="#nosotros">{{ translations.navbar.nosotros }}</a></li>
+            <li><a href="#flota">{{ translations.navbar.flota }}</a></li>
+            <li><a href="#contacto">{{ translations.navbar.contacto }}</a></li>
           </ul>
+          
+          <div class="language-selector">
+            <button 
+              *ngFor="let lang of availableLanguages"
+              [class.active]="currentLanguage === lang"
+              (click)="changeLanguage(lang)"
+              [title]="getLanguageName(lang)">
+              {{ lang.toUpperCase() }}
+            </button>
+          </div>
+
           <button class="hamburger" (click)="toggleMenu()" [class.open]="menuOpen">
             <span></span><span></span><span></span>
           </button>
         </div>
         <div class="mobile-menu" [class.open]="menuOpen">
-          <a href="#inicio" (click)="menuOpen=false">Inicio</a>
-          <a href="#nosotros" (click)="menuOpen=false">Nosotros</a>
-          <a href="#flota" (click)="menuOpen=false">Nuestra Flota</a>
-          <a href="#contacto" (click)="menuOpen=false">Contacto</a>
+          <a href="#inicio" (click)="menuOpen=false">{{ translations.navbar.inicio }}</a>
+          <a href="#nosotros" (click)="menuOpen=false">{{ translations.navbar.nosotros }}</a>
+          <a href="#flota" (click)="menuOpen=false">{{ translations.navbar.flota }}</a>
+          <a href="#contacto" (click)="menuOpen=false">{{ translations.navbar.contacto }}</a>
+          <div class="mobile-language-selector">
+            <button 
+              *ngFor="let lang of availableLanguages"
+              [class.active]="currentLanguage === lang"
+              (click)="changeLanguage(lang)">
+              {{ getLanguageName(lang) }}
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -74,12 +97,13 @@ import { FleetComponent } from './fleet/fleet.component';
     }
 
     .nav-inner {
-      max-width: 1280px;
+      max-width: 1480px;
       margin: 0 auto;
-      padding: 0 40px;
+      padding: 0 100px 0 40px;
       display: flex;
       align-items: center;
       gap: 40px;
+      transform: translateX(-108px);
     }
 
     .nav-logo {
@@ -143,6 +167,36 @@ import { FleetComponent } from './fleet/fleet.component';
       }
     }
 
+    .language-selector {
+      display: flex;
+      gap: 6px;
+      margin-left: 20px;
+
+      button {
+        background: transparent;
+        border: 1px solid rgba(212,175,55,0.3);
+        color: rgba(255,255,255,0.7);
+        padding: 6px 10px;
+        border-radius: 3px;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          border-color: rgba(212,175,55,0.7);
+          color: #fff;
+        }
+
+        &.active {
+          background: #d4af37;
+          border-color: #d4af37;
+          color: #060606;
+        }
+      }
+    }
+
     .nav-cta {
       background: linear-gradient(135deg, #d4af37, #f0d060);
       color: #060606;
@@ -167,6 +221,9 @@ import { FleetComponent } from './fleet/fleet.component';
       gap: 5px;
       padding: 6px;
       margin-left: auto;
+      background: none;
+      border: none;
+      cursor: pointer;
 
       span {
         display: block;
@@ -192,7 +249,7 @@ import { FleetComponent } from './fleet/fleet.component';
       transition: max-height 0.4s ease;
 
       &.open {
-        max-height: 200px;
+        max-height: 300px;
       }
 
       a {
@@ -203,6 +260,38 @@ import { FleetComponent } from './fleet/fleet.component';
         text-transform: uppercase;
         padding: 8px 0;
         border-bottom: 1px solid rgba(255,255,255,0.08);
+        text-decoration: none;
+      }
+    }
+
+    .mobile-language-selector {
+      display: flex;
+      gap: 6px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+
+      button {
+        flex: 1;
+        background: transparent;
+        border: 1px solid rgba(212,175,55,0.3);
+        color: rgba(255,255,255,0.7);
+        padding: 6px 8px;
+        border-radius: 3px;
+        font-size: 11px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          border-color: rgba(212,175,55,0.7);
+          color: #fff;
+        }
+
+        &.active {
+          background: #d4af37;
+          border-color: #d4af37;
+          color: #060606;
+        }
       }
     }
 
@@ -227,17 +316,17 @@ import { FleetComponent } from './fleet/fleet.component';
       height: 150px;
       width: auto;
       object-fit: contain;
-      /*filter: brightness(0) invert(1); la convierte a blanco */
     }
 
     @media (max-width: 1024px) {
       .logo-text { display: none; }
       .nav-links { gap: 20px; }
       .nav-inner { padding: 0 30px; }
+      .language-selector { margin-left: 10px; }
     }
 
     @media (max-width: 768px) {
-      .nav-links, .nav-cta { display: none; }
+      .nav-links, .nav-cta, .language-selector { display: none; }
       .hamburger { display: flex; }
       .mobile-menu { display: flex; }
       .nav-inner { padding: 0 20px; gap: 20px; }
@@ -250,19 +339,63 @@ import { FleetComponent } from './fleet/fleet.component';
       .hamburger { gap: 4px; padding: 4px; }
       .hamburger span { width: 20px; height: 1.5px; }
       .mobile-menu { padding: 16px 20px; }
+      .mobile-language-selector { gap: 4px; }
     }
   `]
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
   isScrolled = false;
   menuOpen = false;
+  
+  translations: any = {};
+  currentLanguage: Language = 'es';
+  availableLanguages: Language[] = [];
 
-  constructor() {
+  private destroy$ = new Subject<void>();
+
+  constructor(private translationService: TranslationService) {
     if (typeof window !== 'undefined') {
       window.addEventListener('scroll', () => {
         this.isScrolled = window.scrollY > 60;
       });
     }
+  }
+
+  ngOnInit(): void {
+    this.availableLanguages = this.translationService.getAvailableLanguages();
+    this.currentLanguage = this.translationService.getCurrentLanguage();
+    this.translations = this.translationService.getCurrentTranslations();
+
+    this.translationService.currentLanguage$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(lang => {
+        this.currentLanguage = lang;
+      });
+
+    this.translationService.currentTranslations$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(translations => {
+        this.translations = translations;
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  changeLanguage(language: Language): void {
+    this.translationService.setLanguage(language);
+    this.menuOpen = false;
+  }
+
+  getLanguageName(language: Language): string {
+    const names: { [key in Language]: string } = {
+      es: 'Español',
+      en: 'English',
+      pt: 'Português'
+    };
+    return names[language];
   }
 
   scrollTo(id: string) {

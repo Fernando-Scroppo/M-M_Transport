@@ -1,31 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { TranslationService } from '../core/services/translation.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
   selector: 'app-about',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   template: `
     <section class="t4-about">
       <div class="container">
         <div class="about-header">
           <div class="section-tag">
             <span class="tag-line"></span>
-            <span>Nosotros</span>
+            <span>{{ translations.about.sectionValues }}</span>
           </div>
           <h2 class="section-title">
-            Más de una década conectando<br>
-            <span class="highlight">empresas con el mundo</span>
+            {{ translations.about.title }}<br>
+            <span class="highlight">{{ translations.about.titleHighlight }}</span>
           </h2>
           <p class="section-desc">
-            Somos una empresa de transporte ejecutivo fundada con la misión de brindar traslados
-            de alta calidad para directivos, ejecutivos y empresas que exigen excelencia, puntualidad
-            y absoluta discreción en cada trayecto.
+            {{ translations.about.description }}
           </p>
         </div>
     
         <div class="about-values">
-          @for (v of values; track v) {
+          @for (v of values; track v.id) {
             <div class="value-item">
               <div class="value-icon">
                 <span [innerHTML]="v.icon"></span>
@@ -41,12 +43,12 @@ import { Component } from '@angular/core';
         <div class="services-title-row">
           <div class="section-tag">
             <span class="tag-line"></span>
-            <span>Nuestros Servicios</span>
+            <span>{{ translations.about.sectionServices }}</span>
           </div>
         </div>
     
         <div class="services-grid">
-          @for (s of services; track s) {
+          @for (s of services; track s.id) {
             <div class="service-card">
               <div class="card-accent"></div>
               <div class="card-icon" [innerHTML]="s.icon"></div>
@@ -280,49 +282,84 @@ import { Component } from '@angular/core';
     }
   `]
 })
-export class AboutComponent {
-  values = [
-    {
-      icon: '⚡',
-      title: 'Puntualidad',
-      desc: 'Llegamos siempre a tiempo. Tu agenda es nuestra prioridad.'
-    },
-    {
-      icon: '🔒',
-      title: 'Discreción',
-      desc: 'Confidencialidad garantizada en cada viaje y transacción.'
-    },
-    {
-      icon: '✨',
-      title: 'Excelencia',
-      desc: 'Estándares Premium en servicio y experiencia del cliente.'
-    }
-  ];
+export class AboutComponent implements OnInit, OnDestroy {
+  translations: any = {};
+  values: any[] = [];
+  services: any[] = [];
+  private destroy$ = new Subject<void>();
 
-  services = [
-    {
-      icon: '🏢',
-      title: 'Traslados Ejecutivos',
-      desc: 'Viajes corporativos con máxima comodidad y profesionalismo.',
-      features: ['Vehículos Premium', 'Chofer Profesional', '24/7']
-    },
-    {
-      icon: '✈️',
-      title: 'Transfers Aeroportuario',
-      desc: 'Conexión perfecta a/desde aeropuerto con puntualidad garantizada.',
-      features: ['Monitoreo vuelos', 'Horarios flexibles', 'Tracking']
-    },
-    {
-      icon: '🎯',
-      title: 'Eventos Corporativos',
-      desc: 'Transporte coordinado para delegaciones y asistentes de eventos.',
-      features: ['Flota disponible', 'Itinerarios', 'Servicio integral']
-    },
-    {
-      icon: '🌐',
-      title: 'Viajes VIP',
-      desc: 'Experiencia de lujo con protección y servicios personalizados.',
-      features: ['Discreción total', 'Confort máximo', 'Servicio premium']
-    }
-  ];
+  constructor(private translationService: TranslationService) {}
+
+  ngOnInit(): void {
+    this.translations = this.translationService.getCurrentTranslations();
+    this.updateArrays();
+
+    this.translationService.currentTranslations$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(translations => {
+        this.translations = translations;
+        this.updateArrays();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private updateArrays(): void {
+    const t = this.translations.about;
+    
+    this.values = [
+      {
+        id: 'punctuality',
+        icon: '⚡',
+        title: t.values.punctuality.title,
+        desc: t.values.punctuality.desc
+      },
+      {
+        id: 'discretion',
+        icon: '🔒',
+        title: t.values.discretion.title,
+        desc: t.values.discretion.desc
+      },
+      {
+        id: 'excellence',
+        icon: '✨',
+        title: t.values.excellence.title,
+        desc: t.values.excellence.desc
+      }
+    ];
+
+    this.services = [
+      {
+        id: 'executive',
+        icon: '🏢',
+        title: t.services.executive.title,
+        desc: t.services.executive.desc,
+        features: t.services.executive.features
+      },
+      {
+        id: 'airport',
+        icon: '✈️',
+        title: t.services.airport.title,
+        desc: t.services.airport.desc,
+        features: t.services.airport.features
+      },
+      {
+        id: 'corporate',
+        icon: '🎯',
+        title: t.services.corporate.title,
+        desc: t.services.corporate.desc,
+        features: t.services.corporate.features
+      },
+      {
+        id: 'vip',
+        icon: '🌐',
+        title: t.services.vip.title,
+        desc: t.services.vip.desc,
+        features: t.services.vip.features
+      }
+    ];
+  }
 }
