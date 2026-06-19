@@ -393,7 +393,7 @@ export class FleetComponent implements OnInit, OnDestroy {
         name: t.peugeot408.name,
         image: 'assets/images/vehicles/peugeot-408.png',
         passengers: 2,
-        luggage: 2,
+        luggage: 3,
         features: t.peugeot408.features
       },
       {
@@ -401,7 +401,7 @@ export class FleetComponent implements OnInit, OnDestroy {
         name: t.hondaCivic.name,
         image: 'assets/images/vehicles/honda-civic.png',
         passengers: 2,
-        luggage: 2,
+        luggage: 3,
         features: t.hondaCivic.features
       },
       {

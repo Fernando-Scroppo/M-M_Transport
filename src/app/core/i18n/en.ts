@@ -139,7 +139,15 @@ export const EN_TRANSLATIONS = {
       whatsapp: 'WhatsApp',
       email: 'Email',
       instagram: 'Instagram',
-      address: 'Address'
+      address: 'Address',
+
+    ratingTexts: {
+      1: '⭐ Needs improvement',
+      2: '⭐⭐ Could be better',
+      3: '⭐⭐⭐ Good',
+      4: '⭐⭐⭐⭐ Very good',
+      5: '⭐⭐⭐⭐⭐ Excellent'
+      }
     },
 
     feedback: {
@@ -149,7 +157,7 @@ export const EN_TRANSLATIONS = {
 
     footer: {
       tagline: 'PREMIUM EXECUTIVE TRANSPORTATION',
-      copy: '© 2024 M&M Executive Transportation. All rights reserved.'
+      copy: '© 2026 M&M Executive Transportation. All rights reserved.'
     }
   },
 

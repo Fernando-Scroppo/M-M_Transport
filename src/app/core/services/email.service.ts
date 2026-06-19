@@ -10,7 +10,7 @@ export class EmailService {
   private readonly SERVICE_ID = environment.serviceIdEmail;
   private readonly TEMPLATE_ID = environment.templateIdEmail;
   private readonly PUBLIC_KEY = environment.publicKeyEmail;
-
+  
   constructor() {
     console.log('PhoneNumber: ', this.PHONE_NUMBER);
     console.log('PublicKey: ', this.PUBLIC_KEY);
@@ -31,14 +31,23 @@ export class EmailService {
     reason: string;
     comment: string;
   }): Promise<any> {
+    
+    const serviceLabels: Record<string, string> = {
+      ejecutivo: 'Traslado Ejecutivo',
+      aeropuerto: 'Transfer Aeroportuario',
+      evento: 'Evento Corporativo',
+      vip: 'Viaje VIP',
+      otro: 'Otro tipo de traslado'
+    };
+
     const templateParams = {
       to_email: 'thecallofduty1995@gmail.com',
       from_name: feedbackData.name || 'Cliente Anónimo',
       rating: feedbackData.rating > 0 ? `${feedbackData.rating} estrellas` : 'No calificado',
-      reason: feedbackData.reason || 'No especificado',
+      reason: serviceLabels[feedbackData.reason] || 'No especificado',
       comment: feedbackData.comment,
       date: new Date().toLocaleString('es-AR'),
-      subject: `Nuevo Feedback - Calificación ${feedbackData.rating}/5 ⭐`
+      subject: `Nuevo Feedback - Calificación ${feedbackData.rating} de 5 ⭐`
     };
 
     return emailjs.send(

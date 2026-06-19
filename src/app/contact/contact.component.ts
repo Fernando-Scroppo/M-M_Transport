@@ -732,14 +732,6 @@ export class ContactComponent implements OnInit, OnDestroy {
   submitMessage = '';
   submitError = false;
 
-  ratingTexts = {
-    1: '⭐ Necesita mejora',
-    2: '⭐⭐ Por mejorar',
-    3: '⭐⭐⭐ Bueno',
-    4: '⭐⭐⭐⭐ Muy bueno',
-    5: '⭐⭐⭐⭐⭐ Excelente'
-  };
-
   constructor(
     private whatsAppService: WhatsAppService,
     private instagramService: InstagramService,
@@ -766,7 +758,9 @@ export class ContactComponent implements OnInit, OnDestroy {
   }
 
   getRatingText(): string {
-    return this.ratingTexts[this.feedback.rating as keyof typeof this.ratingTexts] || '';
+    const rating = this.feedback.rating;
+    if (!rating || !this.translations?.contact?.contacts?.ratingTexts) return '';
+    return this.translations.contact.contacts.ratingTexts[String(rating) as '1'|'2'|'3'|'4'|'5'] || '';
   }
 
   onSubmit() {
@@ -778,7 +772,7 @@ export class ContactComponent implements OnInit, OnDestroy {
       this.emailService.sendFeedback(this.feedback).then(
         (response) => {
           this.isSubmitting = false;
-          this.submitMessage = this.translations.contact.messageOK
+          this.submitMessage = this.translations.contact.form.messageOK
           this.submitError = false;
           
           // Reset form después de 2 segundos

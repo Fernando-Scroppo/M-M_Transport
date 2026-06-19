@@ -137,7 +137,14 @@ export const ES_TRANSLATIONS = {
       whatsapp: 'WhatsApp',
       email: 'Correo',
       instagram: 'Instagram',
-      address: 'Dirección'
+      address: 'Dirección',
+      ratingTexts: {
+        1: '⭐ Necesita mejora',
+        2: '⭐⭐ Por mejorar',
+        3: '⭐⭐⭐ Bueno',
+        4: '⭐⭐⭐⭐ Muy bueno',
+        5: '⭐⭐⭐⭐⭐ Excelente'
+      }
     },
 
     feedback: {
@@ -147,7 +154,7 @@ export const ES_TRANSLATIONS = {
 
     footer: {
       tagline: 'TRANSPORTE EJECUTIVO PREMIUM',
-      copy: '© 2024 M&M Transporte Ejecutivo. Todos los derechos reservados.'
+      copy: '© 2026 M&M Transporte Ejecutivo. Todos los derechos reservados.'
     }
   },
 
