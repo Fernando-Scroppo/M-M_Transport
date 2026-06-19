@@ -71,7 +71,7 @@ export const EN_TRANSLATIONS = {
   fleet: {
     sectionTag: 'Our Fleet',
     title: 'Executive Transfers',
-    titleHighlight: 'Modern, comfortable and safe vehicles',
+    titleHighlight: 'Modern, comfortable and safe vehicles.',
     description: 'Modern, comfortable and safe vehicles to provide you with a first-class executive service.',
     passengers: 'passengers',
     luggage: 'suitcases',

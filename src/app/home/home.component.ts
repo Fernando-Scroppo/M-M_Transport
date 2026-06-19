@@ -388,8 +388,8 @@ import { takeUntil } from 'rxjs/operators'
 
     .car-placeholder {
       position: relative;
-      width: 84%;
-      height: 820px;
+      width: 60%;
+      height: 760px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -414,7 +414,7 @@ import { takeUntil } from 'rxjs/operators'
     /* Imagen del auto */
     .car-image {
       position: relative;
-      width: 165%;
+      width: 130%;
       max-width: none;
 
       transform: translateX(80px);
@@ -467,7 +467,7 @@ import { takeUntil } from 'rxjs/operators'
     }
 
     .car-image {
-      width: 165%;
+      width: 145%;
       margin-top: 40px;
     }
 

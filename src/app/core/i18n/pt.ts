@@ -69,7 +69,7 @@ export const PT_TRANSLATIONS = {
   fleet: {
     sectionTag: 'Nossa Frota',
     title: 'Traslados Executivos',
-    titleHighlight: 'Unidades modernas, confortáveis e seguras',
+    titleHighlight: 'Unidades modernas, confortáveis e seguras.',
     description: 'Unidades modernas, confortáveis e seguras para lhe proporcionar um serviço executivo de primeira classe.',
     passengers: 'passageiros',
     luggage: 'malas',

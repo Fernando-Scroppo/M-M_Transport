@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
@@ -12,7 +11,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [HomeComponent, AboutComponent, FleetComponent, ContactComponent],
+  imports: [CommonModule,HomeComponent, AboutComponent, FleetComponent, ContactComponent],
   template: `
     <div class="t4-wrapper">
       <nav class="t4-nav" [class.scrolled]="isScrolled">
@@ -111,7 +110,6 @@ import { takeUntil } from 'rxjs/operators';
       align-items: center;
       gap: 12px;
       flex-shrink: 0;
-      transform: translateX(-108px);
     }
 
     .logo-icon {
