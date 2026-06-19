@@ -12,7 +12,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, HomeComponent, AboutComponent, FleetComponent, ContactComponent],
+  imports: [HomeComponent, AboutComponent, FleetComponent, ContactComponent],
   template: `
     <div class="t4-wrapper">
       <nav class="t4-nav" [class.scrolled]="isScrolled">
@@ -111,6 +111,7 @@ import { takeUntil } from 'rxjs/operators';
       align-items: center;
       gap: 12px;
       flex-shrink: 0;
+      transform: translateX(-108px);
     }
 
     .logo-icon {

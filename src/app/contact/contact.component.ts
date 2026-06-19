@@ -654,7 +654,7 @@ import { takeUntil } from 'rxjs/operators';
     /* Footer */
     .t4-footer {
       background: var(--black);
-      border-top: 1px solid rgba(212,175,55,0.2);
+      border-top: 1px solid rgba(212,175,55,0.15);
       padding: 50px 40px;
       text-align: center;
     }
