@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { WhatsAppService } from '../core/services/whatsapp.service';
+import { TranslationService } from '../core/services/translation.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
 
 @Component({
   selector: 'app-home',
@@ -14,41 +17,40 @@ import { WhatsAppService } from '../core/services/whatsapp.service';
       <div class="hero-content">
         <div class="hero-badge">
           <span class="badge-line"></span>
-          <span>Transporte Ejecutivo Premium</span>
+          <span>{{ translations.hero.badge }}</span>
           <span class="badge-line"></span>
         </div>
 
         <h1 class="hero-title">
-          Detr&aacute;s de cada viaje<br>
-          <em>un sueño cumplido</em>
+          {{ translations.hero.title }}<br>
+          <em>{{ translations.hero.titleItalic }}</em>
         </h1>
 
         <p class="hero-description">
-          Conectamos a líderes empresariales con destinos que importan.<br>
-          Puntualidad, discreción y confort en cada viaje.
+          {{ translations.hero.description }}
         </p>
 
         <div class="hero-actions">
           <button class="btn-primary" (click)="scrollToAndOpenWhatsApp('contacto')">
-            <span>Solicitar Servicio</span>
+            <span>{{ translations.hero.btnRequest }}</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
           </button>
           <button class="btn-secondary" (click)="scrollTo('nosotros')">
-            Conocer más
+            {{ translations.hero.btnLearnMore }}
           </button>
         </div>
 
         <div class="hero-stats">
           <div class="stat">
             <span class="stat-num">12+</span>
-            <span class="stat-label">Años de experiencia</span>
+            <span class="stat-label"> {{ translations.hero.statsExperience }}</span>
           </div>
 
           <div class="stat">
             <span class="stat-num">100%</span>
-            <span class="stat-label">Satisfacción</span>
+            <span class="stat-label">{{ translations.hero.statsSatisfaction }}</span>
           </div>
         </div>
       </div>
@@ -75,7 +77,7 @@ import { WhatsAppService } from '../core/services/whatsapp.service';
 
       <div class="scroll-indicator">
         <div class="scroll-line"></div>
-        <span>Scroll</span>
+        <span>{{ translations.hero.scroll }}</span>
       </div>
     </section>
   `,
@@ -495,7 +497,25 @@ import { WhatsAppService } from '../core/services/whatsapp.service';
   `]
 })
 export class HomeComponent {
-  constructor(private whatsAppService: WhatsAppService) {}
+
+  translations: any = {};
+  private destroy$ = new Subject<void>();
+
+  constructor(private whatsAppService: WhatsAppService,private translationService: TranslationService) {}
+
+  ngOnInit(): void {
+    this.translations = this.translationService.getCurrentTranslations();
+    this.translationService.currentTranslations$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(translations => {
+        this.translations = translations;
+      });
+  }
+
+   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   scrollTo(id: string) {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
