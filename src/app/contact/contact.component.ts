@@ -146,7 +146,7 @@ import { takeUntil } from 'rxjs/operators';
   styles: [`
     .t4-feedback {
       background: #f8f4e8;
-      padding: 100px 40px;
+      padding-top: 100px;
       min-height: 100vh;
     }
 
@@ -156,7 +156,8 @@ import { takeUntil } from 'rxjs/operators';
     }
 
     @media (max-width: 1024px) {
-      .container { padding: 80px 30px; }
+      .t4-feedback { padding-top: 0;}
+      .container { padding: 80px 30px; padding-bottom: 10px; }
     }
 
     @media (max-width: 768px) {

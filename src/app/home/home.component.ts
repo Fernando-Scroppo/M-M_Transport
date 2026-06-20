@@ -303,46 +303,6 @@ import { takeUntil } from 'rxjs/operators'
       background: rgba(212,175,55,0.1);
     }
 
-    /* Original estilo del automovil y skyline, comentado para probar nueva imagen
-    .hero-visual {
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      width: 50%;
-      height: 100%;
-      opacity: 0.8;
-      pointer-events: none;
-    }
-
-    .car-placeholder {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      display: flex;
-      align-items: flex-end;
-      justify-content: flex-end;
-    }
-
-    .car-image {
-      width: 90%;
-      height: 90%;
-      object-fit: contain;
-      object-position: bottom right;
-      filter: drop-shadow(0 20px 60px rgba(212,175,55,0.15));
-    }
-
-    .city-skyline {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      width: 100%;
-      height: 30%;
-      opacity: 0.6;
-    }
-    */ 
-
-
-
     .scroll-indicator {
       position: absolute;
       bottom: 40px;
@@ -374,9 +334,7 @@ import { takeUntil } from 'rxjs/operators'
       color: #d4af37;
     }
 
-
-  /* COMIENZAN LAS CLASES NUEVAS */
-
+    /* Hero Visual - Auto del hero */
     .hero-visual {
       position: relative;
       width: 60%;
@@ -414,23 +372,17 @@ import { takeUntil } from 'rxjs/operators'
     /* Imagen del auto */
     .car-image {
       position: relative;
-      width: 130%;
+      width: 145%;
       max-width: none;
-
       transform: translateX(80px);
-
       object-fit: contain;
       object-position: center;
-
       z-index: 2;
-
-      /* Integración visual */
       filter:
           drop-shadow(0 35px 70px rgba(0,0,0,0.7))
           drop-shadow(0 0 35px rgba(212,175,55,0.10))
           brightness(0.96)
           contrast(1.04);
-
       animation: floatCar 6s ease-in-out infinite;
     }
 
@@ -445,42 +397,22 @@ import { takeUntil } from 'rxjs/operators'
 
     /* Movimiento suave premium */
     @keyframes floatCar {
-      0% {
-        transform: translateX(80px) translateY(0px);
-      }
-
-      50% {
-        transform: translateX(80px) translateY(-10px);
-      }
-
-      100% {
-        transform: translateX(80px) translateY(0px);
-      }
+      0% { transform: translateX(80px) translateY(0px); }
+      50% { transform: translateX(80px) translateY(-10px); }
+      100% { transform: translateX(80px) translateY(0px); }
     }
-
-    .hero {
-      background:
-      radial-gradient(circle at 70% 40%,
-      rgba(212,175,55,0.08),
-      transparent 35%),
-      #050505;
-    }
-
-    .car-image {
-      width: 145%;
-      margin-top: 40px;
-    }
-
-/* FINALIZAN CLASES NUEVAS */
 
     @keyframes scroll-pulse {
       0%, 100% { transform: translateX(-50%) translateY(0); }
       50% { transform: translateX(-50%) translateY(8px); }
     }
 
+    /* Media Queries Responsive */
     @media (max-width: 1024px) {
       .hero-visual { width: 40%; opacity: 0.5; }
       .hero-content { max-width: 100%; }
+      .car-placeholder { height: 600px; }
+      .car-image { width: 130%; }
     }
 
     @media (max-width: 768px) {
@@ -488,11 +420,18 @@ import { takeUntil } from 'rxjs/operators'
         padding: 100px 20px 60px;
         flex-direction: column;
       }
-
-      .hero-visual { width: 100%; height: 40%; position: relative; }
+      .hero-visual { display: none; }
+      .hero-content { width: 100%; }
       .hero-title { font-size: clamp(36px, 5vw, 52px); }
-      .hero-stats { flex-direction: column; gap: 20px; }
+      .hero-stats { display: flex; justify-content: center; }
       .stat-divider { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .t4-hero { padding: 70px 20px 40px; }
+      .hero-visual { display: none; }
+      .hero-title { font-size: clamp(28px, 6vw, 40px); }
+      .hero-stats { gap: 16px; }
     }
   `]
 })

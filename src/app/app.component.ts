@@ -14,16 +14,16 @@ import { takeUntil } from 'rxjs/operators';
   imports: [CommonModule,HomeComponent, AboutComponent, FleetComponent, ContactComponent],
   template: `
     <div class="t4-wrapper">
-      <nav class="t4-nav" [class.scrolled]="isScrolled">
+      <nav class="t4-nav" [class.scrolled]="isScrolled" [class.menu-open]="menuOpen">
         <div class="nav-inner">
           <div class="nav-logo">
             <img src="assets/images/Logo.png" alt="M&M Logo" class="logo-img">
           </div>
           <ul class="nav-links">
-            <li><a href="#inicio">{{ translations.navbar.inicio }}</a></li>
-            <li><a href="#nosotros">{{ translations.navbar.nosotros }}</a></li>
-            <li><a href="#flota">{{ translations.navbar.flota }}</a></li>
-            <li><a href="#contacto">{{ translations.navbar.contacto }}</a></li>
+            <li><a href="javascript:void(0)" (click)="scrollTo('inicio')">{{ translations.navbar.inicio }}</a></li>
+            <li><a href="javascript:void(0)" (click)="scrollTo('nosotros')">{{ translations.navbar.nosotros }}</a></li>
+            <li><a href="javascript:void(0)" (click)="scrollTo('flota')">{{ translations.navbar.flota }}</a></li>
+            <li><a href="javascript:void(0)" (click)="scrollTo('contacto')">{{ translations.navbar.contacto }}</a></li>
           </ul>
           
           <div class="language-selector">
@@ -41,10 +41,10 @@ import { takeUntil } from 'rxjs/operators';
           </button>
         </div>
         <div class="mobile-menu" [class.open]="menuOpen">
-          <a href="#inicio" (click)="menuOpen=false">{{ translations.navbar.inicio }}</a>
-          <a href="#nosotros" (click)="menuOpen=false">{{ translations.navbar.nosotros }}</a>
-          <a href="#flota" (click)="menuOpen=false">{{ translations.navbar.flota }}</a>
-          <a href="#contacto" (click)="menuOpen=false">{{ translations.navbar.contacto }}</a>
+          <a href="javascript:void(0)" (click)="scrollTo('inicio')">{{ translations.navbar.inicio }}</a>
+          <a href="javascript:void(0)" (click)="scrollTo('nosotros')">{{ translations.navbar.nosotros }}</a>
+          <a href="javascript:void(0)" (click)="scrollTo('flota')">{{ translations.navbar.flota }}</a>
+          <a href="javascript:void(0)" (click)="scrollTo('contacto')">{{ translations.navbar.contacto }}</a>
           <div class="mobile-language-selector">
             <button 
               *ngFor="let lang of availableLanguages"
@@ -93,6 +93,11 @@ import { takeUntil } from 'rxjs/operators';
         box-shadow: 0 4px 30px rgba(0,0,0,0.3);
         backdrop-filter: blur(10px);
       }
+
+      &.menu-open {
+        background: rgba(6,6,6,0.99);
+        box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+      }
     }
 
     .nav-inner {
@@ -138,6 +143,8 @@ import { takeUntil } from 'rxjs/operators';
       display: flex;
       gap: 36px;
       margin-left: auto;
+      visibility: visible;
+      opacity: 1;
 
       a {
         color: rgba(255,255,255,0.75);
@@ -170,6 +177,8 @@ import { takeUntil } from 'rxjs/operators';
       display: flex;
       gap: 6px;
       margin-left: 20px;
+      visibility: visible;
+      opacity: 1;
 
       button {
         background: transparent;
@@ -219,10 +228,13 @@ import { takeUntil } from 'rxjs/operators';
       flex-direction: column;
       gap: 5px;
       padding: 6px;
-      margin-left: auto;
       background: none;
       border: none;
       cursor: pointer;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1001;
 
       span {
         display: block;
@@ -241,14 +253,20 @@ import { takeUntil } from 'rxjs/operators';
       display: none;
       flex-direction: column;
       background: rgba(6,6,6,0.98);
-      padding: 20px 40px;
+      padding: 0;
       gap: 16px;
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.4s ease;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      z-index: 999;
 
       &.open {
-        max-height: 300px;
+        max-height: 400px;
+        padding: 20px 40px;
       }
 
       a {
@@ -325,20 +343,33 @@ import { takeUntil } from 'rxjs/operators';
     }
 
     @media (max-width: 768px) {
-      .nav-links, .nav-cta, .language-selector { display: none; }
+      .nav-links { 
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+      }
+      .nav-cta { display: none !important; }
+      .language-selector { 
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+      }
       .hamburger { display: flex; }
       .mobile-menu { display: flex; }
-      .nav-inner { padding: 0 20px; gap: 20px; }
-      .logo-icon { width: 36px; height: 36px; font-size: 12px; }
+      .mobile-menu:not(.open) { display: flex; }
+      .nav-inner { padding: 0 20px; gap: 20px; transform: none; }
+      .logo-img { height: 60px; }
     }
 
     @media (max-width: 480px) {
       .t4-nav { padding: 16px 0; }
       .t4-nav.scrolled { padding: 12px 0; }
-      .hamburger { gap: 4px; padding: 4px; }
+      .hamburger { gap: 4px; padding: 4px; top: 16px; right: 16px; }
       .hamburger span { width: 20px; height: 1.5px; }
-      .mobile-menu { padding: 16px 20px; }
+      .mobile-menu { padding: 0; }
+      .mobile-menu.open { padding: 16px 20px; }
       .mobile-language-selector { gap: 4px; }
+      .logo-img { height: 50px; }
     }
   `]
 })
@@ -355,7 +386,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(private translationService: TranslationService) {
     if (typeof window !== 'undefined') {
       window.addEventListener('scroll', () => {
-        this.isScrolled = window.scrollY > 60;
+        this.isScrolled = window.scrollY > 1;
       });
     }
   }
@@ -402,7 +433,8 @@ export class AppComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       const element = document.getElementById(id);
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+        const offsetTop = element.getBoundingClientRect().top + window.scrollY - 100;
+        window.scrollTo({ top: offsetTop, behavior: 'smooth' });
         if (id === 'contacto') {
           setTimeout(() => {
             const nameInput = document.getElementById('t4-name');
