@@ -93,7 +93,7 @@ import { takeUntil } from 'rxjs/operators'
     }
 
     @media (max-width: 1024px) {
-      .t4-hero { padding: 100px 60px 60px; }
+      .t4-hero { padding: 0px 60px 60px; min-height: 86vh; }
     }
 
     @media (max-width: 768px) {
@@ -275,6 +275,7 @@ import { takeUntil } from 'rxjs/operators'
       display: flex;
       flex-direction: column;
       gap: 4px;
+      text-align: center;
     }
 
     .stat-num {
@@ -337,16 +338,16 @@ import { takeUntil } from 'rxjs/operators'
     /* Hero Visual - Auto del hero */
     .hero-visual {
       position: relative;
-      width: 60%;
+      width: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
+      // overflow: hidden;
     }
 
     .car-placeholder {
       position: relative;
-      width: 60%;
+      width: 100%;
       height: 760px;
       display: flex;
       align-items: center;
@@ -372,7 +373,7 @@ import { takeUntil } from 'rxjs/operators'
     /* Imagen del auto */
     .car-image {
       position: relative;
-      width: 145%;
+      width: 100%;
       max-width: none;
       transform: translateX(80px);
       object-fit: contain;
@@ -396,11 +397,36 @@ import { takeUntil } from 'rxjs/operators'
     }
 
     /* Movimiento suave premium */
+    // :host {
+    //   --car-translate-x: 80px;
+    // }
+
+    / Ajustá la variable según el ancho de pantalla */
+    // @media (max-width: 1280px) {
+    //   :host { --car-translate-x: 40px; }
+    // }
+
+    // @media (max-width: 1024px) {
+    //   :host { --car-translate-x: 10px; }
+    // }
+
+    // @media (max-width: 768px) {
+    //   :host { --car-translate-x: 0px; }
+    // }
+
+
+    // @keyframes floatCar {
+    //   0% { transform: translateX(80px) translateY(0px); }
+    //   50% { transform: translateX(80px) translateY(-10px); }
+    //   100% { transform: translateX(80px) translateY(0px); }
+    // }
+
     @keyframes floatCar {
-      0% { transform: translateX(80px) translateY(0px); }
-      50% { transform: translateX(80px) translateY(-10px); }
-      100% { transform: translateX(80px) translateY(0px); }
+      0%   { transform: translateX(var(--car-translate-x)) translateY(0px); }
+      50%  { transform: translateX(var(--car-translate-x)) translateY(-10px); }
+      100% { transform: translateX(var(--car-translate-x)) translateY(0px); }
     }
+
 
     @keyframes scroll-pulse {
       0%, 100% { transform: translateX(-50%) translateY(0); }
@@ -409,10 +435,10 @@ import { takeUntil } from 'rxjs/operators'
 
     /* Media Queries Responsive */
     @media (max-width: 1024px) {
-      .hero-visual { width: 40%; opacity: 0.5; }
+      .hero-visual { width: 40%; }
       .hero-content { max-width: 100%; }
       .car-placeholder { height: 600px; }
-      .car-image { width: 130%; }
+      .car-image { width: 150%; }
     }
 
     @media (max-width: 768px) {
@@ -421,8 +447,8 @@ import { takeUntil } from 'rxjs/operators'
         flex-direction: column;
       }
       .hero-visual { display: none; }
-      .hero-content { width: 100%; }
-      .hero-title { font-size: clamp(36px, 5vw, 52px); }
+      .hero-content { width: 100%; display: flex; align-items: center; flex-direction: column;  }
+      .hero-title { font-size: clamp(50px, 5vw, 52px); text-align: center; }
       .hero-stats { display: flex; justify-content: center; }
       .stat-divider { display: none; }
     }

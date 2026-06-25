@@ -107,7 +107,7 @@ import { takeUntil } from 'rxjs/operators';
       display: flex;
       align-items: center;
       gap: 40px;
-      transform: translateX(-108px);
+      // transform: translateX(-108px);
     }
 
     .nav-logo {
