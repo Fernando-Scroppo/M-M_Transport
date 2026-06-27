@@ -103,6 +103,7 @@ export const EN_TRANSLATIONS = {
     title: 'Share',
     title2:'your',
     description: 'We strive to provide a service based on punctuality, comfort, and personalized attention. Your feedback helps us continue to improve.',
+    backToTop:'Back to the top',
     
     form: {
       title:"Let's talk about your experience",

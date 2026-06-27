@@ -101,6 +101,7 @@ export const ES_TRANSLATIONS = {
     title: 'Compartí',
     title2: 'tu experiencia',
     description: 'Nos esforzamos por brindar un servicio basado en la puntualidad, el confort y la atención personalizada. Su opinión nos ayuda a seguir mejorando.',
+    backToTop: 'Volver al inicio',
     
     form: {
       title: 'Hablemos de su experiencia',

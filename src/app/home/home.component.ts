@@ -57,7 +57,11 @@ import { takeUntil } from 'rxjs/operators'
 
       <div class="hero-visual">
         <div class="car-placeholder">
-          <img src="assets/images/peugeot-408.png" alt="Peugeot 408" class="car-image">
+          <img
+            [src]="cars[currentCarIndex].src"
+            [alt]="cars[currentCarIndex].alt"
+            class="car-image"
+            [class.car-image-visible]="isCarVisible">
           <div class="city-skyline">
             <svg viewBox="0 0 600 100" xmlns="http://www.w3.org/2000/svg">
               <rect x="0" y="40" width="30" height="60" fill="rgba(212,175,55,0.15)" rx="2"/>
@@ -303,6 +307,45 @@ import { takeUntil } from 'rxjs/operators'
       background: rgba(212,175,55,0.1);
     }
 
+    /* Original estilo del automovil y skyline, comentado para probar nueva imagen
+    .hero-visual {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 50%;
+      height: 100%;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .car-placeholder {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+    }
+
+    .car-image {
+      width: 90%;
+      height: 90%;
+      object-fit: contain;
+      object-position: bottom right;
+      filter: drop-shadow(0 20px 60px rgba(212,175,55,0.15));
+    }
+
+    .city-skyline {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      height: 30%;
+      opacity: 0.6;
+    }
+    */ 
+
+
     .scroll-indicator {
       position: absolute;
       bottom: 40px;
@@ -384,6 +427,14 @@ import { takeUntil } from 'rxjs/operators'
           brightness(0.96)
           contrast(1.04);
       animation: floatCar 6s ease-in-out infinite;
+
+      /* Transición de cruce (fade) al cambiar de auto */
+      opacity: 0;
+      transition: opacity 1.2s ease-in-out;
+    }
+
+    .car-image-visible {
+      opacity: 1;
     }
 
     /* Skyline */
@@ -400,6 +451,19 @@ import { takeUntil } from 'rxjs/operators'
       0% { transform: translateX(80px) translateY(0px); }
       50% { transform: translateX(80px) translateY(-10px); }
       100% { transform: translateX(80px) translateY(0px); }
+    }
+
+    .hero {
+      background:
+      radial-gradient(circle at 70% 40%,
+      rgba(212,175,55,0.08),
+      transparent 35%),
+      #050505;
+    }
+
+    .car-image {
+      width: 145%;
+      margin-top: 40px;
     }
 
     @keyframes scroll-pulse {
@@ -440,6 +504,20 @@ export class HomeComponent {
   translations: any = {};
   private destroy$ = new Subject<void>();
 
+   // Listado de autos que rotan en el hero. Agregá/quitá entradas acá
+  // y se reflejan automáticamente en el ciclo de cambio.
+  cars = [
+    { src: 'assets/images/peugeot-408.png', alt: 'Peugeot 408' },
+    { src: 'assets/images/toyota-corolla.png', alt: 'Toyota Corolla' },
+    { src: 'assets/images/honda-civic.png', alt: 'Honda Civic' },
+    { src: 'assets/images/toyota-hiace-wagon.png', alt: 'Toyota Hiace Wagon' }
+  ];
+
+  currentCarIndex = 0;
+  isCarVisible = false;
+  private carRotationIntervalId?: ReturnType<typeof setInterval>;
+  private readonly carRotationMs = 30000; // 30 segundos
+
   constructor(private whatsAppService: WhatsAppService,private translationService: TranslationService) {}
 
   ngOnInit(): void {
@@ -449,11 +527,39 @@ export class HomeComponent {
       .subscribe(translations => {
         this.translations = translations;
       });
+
+      this.startCarRotation();
   }
 
    ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+
+    if (this.carRotationIntervalId) {
+      clearInterval(this.carRotationIntervalId);
+    }
+
+  }
+
+  private startCarRotation(): void {
+    // Pequeño delay para que el fade-in inicial se note al cargar la sección
+    setTimeout(() => this.isCarVisible = true, 50);
+
+    this.carRotationIntervalId = setInterval(() => {
+      this.changeCar();
+    }, this.carRotationMs);
+  }
+
+  private changeCar(): void {
+    // Fade out
+    this.isCarVisible = false;
+
+    // Espera a que termine la transición de opacidad (1.2s) antes de
+    // cambiar la imagen y volver a hacer fade in
+    setTimeout(() => {
+      this.currentCarIndex = (this.currentCarIndex + 1) % this.cars.length;
+      this.isCarVisible = true;
+    }, 1200);
   }
 
   scrollTo(id: string) {

@@ -141,6 +141,15 @@ import { takeUntil } from 'rxjs/operators';
           <p class="footer-copy">{{ translations.contact.footer.copy }}</p>
         </div>
       </footer>
+      <!-- Botón volver al inicio -->
+      <div class="back-to-top-wrap">
+        <button class="btn-back-top" (click)="goToHome()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 15l-6-6-6 6"/>
+          </svg>
+          <span>{{ translations.contact.backToTop }}</span>
+        </button>
+      </div>
     </section>
   `,
   styles: [`
@@ -715,6 +724,54 @@ import { takeUntil } from 'rxjs/operators';
       .rating-stars { gap: 8px; }
       .star-icon { font-size: 24px; }
     }
+
+    /* Botón volver al inicio */
+    .back-to-top-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 40px 0 60px;
+      background: var(--black);
+      border-top: 1px solid rgba(212,175,55,0.1);
+    }
+
+    .btn-back-top {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      border: 1px solid rgba(212,175,55,0.3);
+      border-radius: 8px;
+      padding: 16px 32px;
+      color: #d4af37;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-back-top:hover {
+      background: rgba(212,175,55,0.08);
+      border-color: #d4af37;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(212,175,55,0.15);
+    }
+
+    .btn-back-top svg {
+      transition: transform 0.3s ease;
+    }
+
+    .btn-back-top:hover svg {
+      transform: translateY(-3px);
+    }
+
+    @media (max-width: 480px) {
+      .back-to-top-wrap { padding: 30px 0 40px; }
+      .btn-back-top { padding: 14px 24px; }
+    }
   `]
 })
 export class ContactComponent implements OnInit, OnDestroy {
@@ -748,6 +805,16 @@ export class ContactComponent implements OnInit, OnDestroy {
         this.translations = translations;
       });
   }
+
+  goToHome() {
+    const home = document.getElementById('inicio');
+    if (home) {
+      home.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
 
   ngOnDestroy(): void {
     this.destroy$.next();

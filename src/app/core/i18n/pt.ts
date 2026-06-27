@@ -101,6 +101,7 @@ export const PT_TRANSLATIONS = {
     title: 'Partilha',
     title2: 'o teu',
     description: 'Esforçamo-nos por prestar um serviço baseado na pontualidade, no conforto e no atendimento personalizado. A sua opinião ajuda-nos a continuar a melhorar.',
+    backToTop:'Voltar ao início',
     
     form: {
       title: 'Vamos falar sobre a sua experiência',
