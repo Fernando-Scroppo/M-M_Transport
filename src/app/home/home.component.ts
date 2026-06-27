@@ -418,10 +418,12 @@ import { takeUntil } from 'rxjs/operators'
       position: relative;
       width: 100%;
       max-width: none;
-      transform: translateX(80px);
+      display: block;
+      transform: translate3d(80px, 0, 0);
       object-fit: contain;
       object-position: center;
       z-index: 2;
+      will-change: transform;
       filter:
           drop-shadow(0 35px 70px rgba(0,0,0,0.7))
           drop-shadow(0 0 35px rgba(212,175,55,0.10))
@@ -473,9 +475,9 @@ import { takeUntil } from 'rxjs/operators'
     // }
 
     @keyframes floatCar {
-      0%   { transform: translateX(var(--car-translate-x)) translateY(0px); }
-      50%  { transform: translateX(var(--car-translate-x)) translateY(-10px); }
-      100% { transform: translateX(var(--car-translate-x)) translateY(0px); }
+      0%   { transform: translate3d(80px, 0, 0); }
+      50%  { transform: translate3d(80px, -14px, 0); }
+      100% { transform: translate3d(80px, 0, 0); }
     }
 
     .hero {

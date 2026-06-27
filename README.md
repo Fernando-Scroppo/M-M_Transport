@@ -1,180 +1,220 @@
-# Executive Transport — Demo de Plantillas Web
+# Executive Transport
 
-Proyecto Angular 19 con **3 plantillas visuales profesionales** para empresa de transporte ejecutivo.
-
----
-
-## 📋 Requisitos previos
-
-### 1. Instalar Node.js
-
-Descargá Node.js versión **18 o superior** desde:
-👉 https://nodejs.org/en/download
-
-Verificá la instalación:
-```bash
-node --version   # debe mostrar v18.x.x o superior
-npm --version    # debe mostrar 9.x.x o superior
-```
-
-### 2. Instalar Angular CLI
-
-```bash
-npm install -g @angular/cli
-```
-
-Verificá:
-```bash
-ng version
-```
+Aplicación web desarrollada en Angular 21 para presentar una marca de transporte ejecutivo con una experiencia visual premium, navegación por secciones, soporte multilenguaje y flujo de contacto integrado con WhatsApp, Instagram y EmailJS.
 
 ---
 
-## 🚀 Instalación y ejecución
+## 🚀 Descripción general
 
-### Paso 1 — Abrir el proyecto en VS Code
+Este proyecto es una landing page moderna y responsiva para una empresa de transporte ejecutivo. La interfaz está pensada para transmitir prestigio, discreción y confiabilidad a través de:
 
-1. Abrí Visual Studio Code
-2. `Archivo` → `Abrir carpeta`
-3. Seleccioná la carpeta **executive-transport**
+- un hero section con llamada a la acción,
+- una sección de presentación institucional,
+- una galería de vehículos / flota,
+- un módulo de feedback y contacto,
+- navegación fija con selector de idioma.
 
-### Paso 2 — Abrir terminal integrado
+La estructura actual está orientada a componentes standalone y servicios reutilizables, sin backend propio.
 
-En VS Code: `Terminal` → `Nueva terminal` (o `Ctrl + ñ`)
+---
 
-### Paso 3 — Instalar dependencias
+## ✅ Características principales
+
+- Diseño premium en tonos negro, dorado y blanco.
+- Layout responsive para escritorio, tablet y móvil.
+- Navegación por anclas entre secciones principales.
+- Selector de idioma en español, inglés y portugués.
+- Integración con WhatsApp para solicitar servicios.
+- Integración con Instagram para abrir el perfil de la marca.
+- Formulario de feedback con envío vía EmailJS (si se configuran las variables de entorno).
+- Persistencia del idioma seleccionado con localStorage.
+- Arquitectura basada en componentes standalone de Angular.
+
+---
+
+## 🧰 Requisitos previos
+
+Asegurate de tener instalado:
+
+- Node.js 20 o superior
+- npm 10 o superior
+
+Verificá la instalación con:
+
+```bash
+node --version
+npm --version
+```
+
+---
+
+## 🔧 Instalación y ejecución
+
+### 1. Clonar el repositorio
+
+```bash
+git clone <url-del-repositorio>
+cd executive-transport
+```
+
+### 2. Instalar dependencias
 
 ```bash
 npm install
 ```
 
-> Esto descarga todos los paquetes necesarios. Puede tardar 1-2 minutos.
-
-### Paso 4 — Ejecutar el servidor de desarrollo
+### 3. Ejecutar la aplicación en modo desarrollo
 
 ```bash
-ng serve
+npm start
 ```
 
-> El proyecto se compila y queda disponible en:
-> **http://localhost:4200**
+La app quedará disponible en:
+
+```text
+http://localhost:4200
+```
 
 ---
 
-## 🎨 Cómo ver las 3 plantillas
+## 🛠️ Scripts disponibles
 
-Una vez iniciado el servidor, abrí tu navegador en **http://localhost:4200**
-
-Verás la **pantalla de selección de plantillas**. Desde ahí podés navegar a cada una:
-
-| Plantilla | URL directa | Estilo |
-|-----------|-------------|--------|
-| 🔵 Corporativa | http://localhost:4200/#/template1 | Azul oscuro · Blanco · Gris |
-| ⚡ Tecnológica | http://localhost:4200/#/template2 | Gris oscuro · Celeste · Blanco |
-| 🏆 Premium VIP | http://localhost:4200/#/template3 | Negro · Dorado · Blanco |
-
-Cada plantilla incluye:
-- **Hero / Inicio** — sección principal con CTA
-- **Quiénes Somos** — descripción + 4 servicios en cards
-- **Contacto** — formulario visual + iconos de redes + footer
+```bash
+npm start        # inicia el servidor de desarrollo
+npm run build    # compila la aplicación para producción
+npm run watch    # compila en modo desarrollo y observa cambios
+```
 
 ---
 
-## 🏗️ Estructura del proyecto
+## ⚙️ Configuración de entorno
 
+La app utiliza variables de entorno para los servicios de contacto.
+
+Las variables esperadas son:
+
+```env
+NG_APP_PHONE=
+NG_APP_PUBLIC_KEY_EMAIL=
+NG_APP_SERVICE_ID=
+NG_APP_TEMPLATE_ID=
 ```
+
+Estas variables se leen desde los archivos de entorno de Angular:
+
+- [src/environments/environment.ts](src/environments/environment.ts)
+- [src/environments/environment.prod.ts](src/environments/environment.prod.ts)
+
+> Si no se configuran, el flujo de WhatsApp e EmailJS podrá no funcionar correctamente.
+
+---
+
+## 🧱 Estructura del proyecto
+
+```text
 executive-transport/
-├── src/
-│   ├── app/
-│   │   ├── app.component.ts        ← Componente raíz
-│   │   ├── app.config.ts           ← Configuración Angular
-│   │   ├── app.routes.ts           ← Rutas principales
-│   │   ├── core/
-│   │   │   └── selector/           ← Pantalla de selección
-│   │   └── templates/
-│   │       ├── template1/          ← Plantilla Corporativa (azul)
-│   │       │   ├── home/
-│   │       │   ├── about/
-│   │       │   └── contact/
-│   │       ├── template2/          ← Plantilla Tecnológica (celeste)
-│   │       │   ├── home/
-│   │       │   ├── about/
-│   │       │   └── contact/
-│   │       └── template3/          ← Plantilla VIP (dorado)
-│   │           ├── home/
-│   │           ├── about/
-│   │           └── contact/
-│   ├── index.html
-│   ├── main.ts
-│   └── styles.scss
 ├── angular.json
 ├── package.json
 ├── tsconfig.json
+├── public/
+│   └── assets/
+│       └── images/
+│           └── vehicles/
+├── src/
+│   ├── app/
+│   │   ├── app.component.ts
+│   │   ├── app.config.ts
+│   │   ├── app.routes.ts
+│   │   ├── about/
+│   │   ├── contact/
+│   │   ├── core/
+│   │   │   ├── i18n/
+│   │   │   └── services/
+│   │   ├── fleet/
+│   │   └── home/
+│   ├── environments/
+│   │   ├── environment.ts
+│   │   └── environment.prod.ts
+│   ├── index.html
+│   ├── main.ts
+│   └── styles.scss
 └── README.md
 ```
 
----
+### Componentes principales
 
-## 🛠️ Comandos útiles
+- [src/app/app.component.ts](src/app/app.component.ts): componente raíz con navbar, secciones y selector de idioma.
+- [src/app/home/home.component.ts](src/app/home/home.component.ts): hero principal y CTA.
+- [src/app/about/about.component.ts](src/app/about/about.component.ts): presentación institucional y servicios.
+- [src/app/fleet/fleet.component.ts](src/app/fleet/fleet.component.ts): muestra la flota disponible.
+- [src/app/contact/contact.component.ts](src/app/contact/contact.component.ts): feedback, contacto y footer.
 
-```bash
-# Iniciar servidor de desarrollo
-ng serve
+### Servicios principales
 
-# Iniciar en un puerto diferente
-ng serve --port 4201
-
-# Build de producción
-ng build
-
-# Build con preview local
-ng build && npx http-server dist/executive-transport/browser
-```
+- [src/app/core/services/translation.service.ts](src/app/core/services/translation.service.ts): gestión del idioma y traducciones dinámicas.
+- [src/app/core/services/whatsapp.service.ts](src/app/core/services/whatsapp.service.ts): generación de enlaces a WhatsApp.
+- [src/app/core/services/instagram.service.ts](src/app/core/services/instagram.service.ts): apertura del perfil de Instagram.
+- [src/app/core/services/email.service.ts](src/app/core/services/email.service.ts): envío de feedback mediante EmailJS.
 
 ---
 
-## ⚙️ Tecnologías utilizadas
+## 🌐 Internacionalización
+
+La app cuenta con traducciones para:
+
+- Español
+- Inglés
+- Portugués
+
+Los textos se centralizan en la carpeta [src/app/core/i18n](src/app/core/i18n) y se consumen desde el servicio de traducciones.
+
+---
+
+## 📦 Tecnologías utilizadas
 
 | Tecnología | Versión |
 |------------|---------|
-| Angular | 19 |
-| TypeScript | 5.6 |
-| SCSS | — |
-| Google Fonts | Cormorant Garamond, Montserrat, Cinzel, Rajdhani |
+| Angular | 21.2.15 |
+| TypeScript | 5.9.3 |
+| RxJS | 7.8.0 |
+| Angular CLI | 21.2.13 |
+| SCSS | soportado por Angular |
+| EmailJS | 4.4.1 |
+| @ngx-env/builder | 21.0.1 |
 
 ---
 
-## 📝 Notas
+## 📝 Notas importantes
 
-- El formulario de contacto es **visual únicamente** (no envía datos reales)
-- El proyecto es **completamente estático** (sin backend ni base de datos)
-- Todos los componentes son **standalone** (Angular moderno)
-- El routing usa **hash location** para compatibilidad estática (`#/template1`)
-- Las plantillas son **responsive**: funcionan en celular, tablet y desktop
+- El proyecto funciona como una SPA de una sola página con secciones ancladas.
+- El enrutamiento actual es mínimo y redirige a la vista principal.
+- El formulario de contacto está preparado para enviar feedback si las credenciales de EmailJS están correctamente configuradas.
+- Los recursos visuales e imágenes se encuentran en la carpeta pública del proyecto.
 
 ---
 
 ## 🆘 Solución de problemas comunes
 
-**Error: `ng` no se reconoce como comando**
+### El comando npm start no funciona
+
+Verificá que tengas una versión compatible de Node.js y que las dependencias estén instaladas correctamente:
+
 ```bash
-npm install -g @angular/cli
+npm install
 ```
 
-**Error al ejecutar `ng serve` (puerto en uso)**
-```bash
-ng serve --port 4201
+### Error al abrir la app en el navegador
+
+Asegurate de usar la URL:
+
+```text
+http://localhost:4200
 ```
 
-**El `npm install` falla con errores de permisos (macOS/Linux)**
-```bash
-sudo npm install -g @angular/cli
-```
+### El formulario no envía feedback
 
-**Pantalla en blanco al abrir el navegador**
-- Asegurate de usar la URL con `#`: http://localhost:4200/#/selector
-- Esperá que la compilación termine (verás `✔ Compiled successfully`)
+Revisá que las variables de entorno de EmailJS estén definidas correctamente antes de construir o ejecutar la app.
 
 ---
 
-*Demo profesional — Executive Transport © 2026*
+© 2026 Executive Transport
