@@ -213,6 +213,9 @@ interface Vehicle {
     .vehicle-info {
       position: relative;
       z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .vehicle-name {

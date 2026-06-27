@@ -184,6 +184,8 @@ import { takeUntil } from 'rxjs/operators';
       gap: 80px;
       align-items: start;
       margin-bottom: 100px;
+      margin-left: 50px;
+      margin-right: 50px;
     }
 
     @media (max-width: 1024px) {
